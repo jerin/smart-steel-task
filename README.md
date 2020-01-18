@@ -1,19 +1,48 @@
 # smart-steel-task
-smart steel task
+* smart steel task
 
+## Prerequisites
+* postgres database
+* python3
+    
 ## Quick Start
+* Create new database in your postgres DB
+    ```
+    CREATE DATABASE smart_steel
+    ```
 * clone git repo
     ```
     git clone repo https://github.com/jerin/smart-steel-task.git
-    cd smart-steel-task
-
+    cd smart-steel-task    
     ```
-* Initialize and activate a virtualenv
-    '''
-* pip install virtualenv
-2 virtualenv smartenv
-3 smartenv\Scripts\activate
-4.pip install -r requirements.txt
-5 python import-data/import_task_data.py
-6.create .env files 
+* Create new .env file in root and add the environment variable by referring .env.template
 
+* Initialize and activate a virtualenv
+    ```
+    pip install virtualenv
+    virtualenv smartenv
+    smartenv\Scripts\activate
+    ```
+* Install the dependencies
+    ```
+    pip install -r requirements.txt
+    ```
+* Database migration
+    ```
+    flask db upgrade
+    ```
+## Application 1 (Import task data from csv to db)
+* Data migration
+    ```
+    python import-data/import_task_data.py
+    ```
+## Application 2 (Dispaly data on web browser)
+* Web application
+    ```
+    flask run
+    ```
+## Test cases
+* Run unit tests
+    ```
+    python -m pytest
+    ```
