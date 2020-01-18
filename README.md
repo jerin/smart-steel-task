@@ -8,7 +8,7 @@
 ## Quick Start
 * Create new database in your postgres DB
     ```
-    CREATE DATABASE smart_steel
+    CREATE DATABASE smart_steel;
     ```
 * clone git repo
     ```
@@ -41,6 +41,7 @@
     ```
     flask run
     ```
+* Open http://localhost:5000/taskdata
 ## Test cases
 * Run unit tests
     ```
