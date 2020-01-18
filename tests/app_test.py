@@ -17,12 +17,12 @@ class BasicTests(unittest.TestCase):
         """check that the application root is responding"""
         response = self.app.get('/', follow_redirects=True)
         self.assertEqual(response.status_code, 200)
-        self.assertIn(b'welcome to python application', response.data)
+        self.assertIn(b'welcome to smart steel application', response.data)        
 
     def test_task_data(self):
         """check that the taskdata get method is response should be 200"""
         response = self.app.get('/taskdata', follow_redirects=True)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)       
 
     def test_invalid_url(self):
         """check that the response for invalid URL should be 404"""

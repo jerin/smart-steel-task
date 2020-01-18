@@ -8,6 +8,7 @@ from task import TaskData as TaskDataOP
 
 
 app = Flask(__name__)
+
 app.config.update({
     'SQLALCHEMY_DATABASE_URI': Config.SQLALCHEMY_DATABASE_URI
 })  
@@ -18,7 +19,7 @@ from models import LogData, TaskData
 
 @app.route('/')
 def welcome():
-    return "welcome to python application"
+    return "welcome to smart steel application"
     
 @app.route('/taskdata')
 def task_data():
