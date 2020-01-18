@@ -1,23 +1,28 @@
 import csv
 import os
 import psycopg2
+from decouple import config as env_conf
 
 # File path.
-filePath = 'D:\\jerin\\Employment\\german-test\\task_data.csv'
+file_path = env_conf('FILEPATH')
+host = env_conf('POSTGRES_HOST')
+db_name = env_conf('POSTGRES_DATABASE')
+user = env_conf('POSTGRES_USER')
+pwd = env_conf('POSTGRES_PWD')
 
 # Database connection variable.
 connect = None
 
 # Check if the CSV file exists.
-if os.path.isfile(filePath):
+if os.path.isfile(file_path):
 
     try:
 
         # Connect to database.
-        connect = psycopg2.connect(host='localhost', database='db1',
-                                   user='postgres', password='root')
+        connect = psycopg2.connect(host=host, database=db_name,
+                                   user=user, password=pwd)
 
-    except psycopg2.DatabaseError as e:
+    except psycopg2.DatabaseError:
 
         # Confirm unsuccessful connection and stop program execution.
         print("Database connection unsuccessful.")
@@ -27,15 +32,16 @@ if os.path.isfile(filePath):
     cursor = connect.cursor()
 
     # Assign CSV file to reader object.
-    reader = csv.DictReader(open(filePath))
+    reader = csv.DictReader(open(file_path))
 
     # Record count.
     recordCount = 0
-
-    # Insert person information into the database.
+    # Clear existing data
+    cursor.execute("DELETE FROM task_data")
+    # Insert data nto the database.
     for row in reader:
 
-        # SQL to insert person information.
+        # SQL to insert data information.
         sqlInsert = \
             "INSERT INTO task_data (id, timestamp, temperature, duration)  \
              VALUES (%s, %s, %s, %s)"
@@ -54,8 +60,8 @@ if os.path.isfile(filePath):
 
         except psycopg2.DatabaseError as e:
 
-            # Confirm error adding person information and stop program execution.
-            print("Error adding person information.")
+            # Confirm error adding data and stop program execution.
+            print("Error adding person information.", e)
             quit()
 
     # Close database connection.
