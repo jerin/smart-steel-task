@@ -1,0 +1,24 @@
+<html>
+  <body>
+    <h1>Log Data</h1>
+    <table style="width:100%">
+      <tr>
+        <th >Id</th>
+        <th>Timestamp</th>
+        <th>Type</th>
+        <th>Action</th>
+      </tr>
+      
+        {% for dataitem in data %}
+        <tr>
+        <td>{{dataitem.id}}</td>
+        <td>{{dataitem.timestamp}}</td>
+        <td>{{dataitem.log_type}}</td>
+        <td>{{dataitem.action}}</td>
+      </tr>
+        {% endfor %}
+        
+    </table>
+    
+  </body>
+</html>

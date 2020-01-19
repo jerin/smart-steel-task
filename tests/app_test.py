@@ -20,9 +20,14 @@ class BasicTests(unittest.TestCase):
         self.assertIn(b'welcome to smart steel application', response.data)        
 
     def test_task_data(self):
-        """check that the taskdata get method is response should be 200"""
+        """check that the task data get method is response should be 200"""
         response = self.app.get('/taskdata', follow_redirects=True)
-        self.assertEqual(response.status_code, 200)       
+        self.assertEqual(response.status_code, 200)   
+
+    def test_log_data(self):
+        """check that the log data get method is response should be 200"""
+        response = self.app.get('/logs', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)      
 
     def test_invalid_url(self):
         """check that the response for invalid URL should be 404"""

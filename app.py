@@ -30,6 +30,13 @@ def task_data():
                            data=data,
                            title="Show Data")
 
+@app.route('/logs')
+def log_data():    
+    data = Log.get_log()
+    return render_template('log_data.html',
+                           data=data,
+                           title="Show Log")
+
 
 @app.errorhandler(404)
 def page_not_found(e):

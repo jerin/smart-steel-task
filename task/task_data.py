@@ -11,9 +11,9 @@ class TaskData:
         except Exception as Err:
             raise Err
 
-    def insert_task_data(id, temperature, duration):
+    def insert_task_data(id, temperature, duration, batch_id):
         try:
-            data = TaskDataModel(id=id, timestamp=datetime.now(), temperature=temperature, duration=duration)
+            data = TaskDataModel(id=id, timestamp=datetime.now(), temperature=temperature, duration=duration, batch_id=batch_id)
             db_session.add(data)
             db_session.commit()
         except Exception as Err:

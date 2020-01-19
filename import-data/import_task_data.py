@@ -91,7 +91,7 @@ if os.path.isfile(file_path + file_name):
 
     # Move src to archive directory
     archive_batch_id = re.sub(r"[^a-zA-Z0-9]", "", str(batchid))
-    shutil.move(file_path + file_name, archive_file_path + archive_batch_id + '_task_data.csv')
+    shutil.move(file_path + file_name, archive_file_path +'\\'+ archive_batch_id + '_task_data.csv')
 
 else:
 

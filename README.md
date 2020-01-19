@@ -42,7 +42,8 @@
     ```
     flask run
     ```
-* Open http://localhost:5000/taskdata
+* Open http://localhost:5000/taskdata - To view task data
+* Open http://localhost:5000/logs - To view logs
 ## Test cases
 * Run unit tests
     ```
