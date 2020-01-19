@@ -12,3 +12,4 @@ class TaskData(Base):
     timestamp = Column(DateTime)
     temperature = Column(Float)
     duration = Column(String(100))
+    batch_id = Column(DateTime, primary_key=True)

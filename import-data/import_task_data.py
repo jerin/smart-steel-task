@@ -1,10 +1,16 @@
 import csv
 import os
+import shutil
+import re
 import psycopg2
 from decouple import config as env_conf
+from datetime import datetime
+
 
 # File path.
-file_path = env_conf('FILEPATH')
+file_path = env_conf('SOURCE_FILE_PATH')
+archive_file_path = env_conf('ARCHIVE_FILE_PATH')
+file_name = env_conf('SOURCE_FILE_NAME')
 host = env_conf('POSTGRES_HOST')
 db_name = env_conf('POSTGRES_DATABASE')
 user = env_conf('POSTGRES_USER')
@@ -14,7 +20,7 @@ pwd = env_conf('POSTGRES_PWD')
 connect = None
 
 # Check if the CSV file exists.
-if os.path.isfile(file_path):
+if os.path.isfile(file_path + file_name):
 
     try:
 
@@ -31,54 +37,61 @@ if os.path.isfile(file_path):
     # Cursor to execute query.
     cursor = connect.cursor()
 
-    # Assign CSV file to reader object.
-    reader = csv.DictReader(open(file_path))
+    # Batchid variable
+    batchid = datetime.now()
 
-    # Record count.
-    recordCount = 0
-    # Clear existing data
-    cursor.execute("DELETE FROM task_data")
-    # Insert data nto the database.
-    for row in reader:
+    with open(file_path + file_name, 'rt') as Data:
+        # Assign CSV file to reader object.
+        reader = csv.DictReader(Data)
 
-        # SQL to insert data information.
-        sqlInsert = \
-            "INSERT INTO task_data (id, timestamp, temperature, duration)  \
-             VALUES (%s, %s, %s, %s)"
+        # Record count.
+        recordCount = 0
+        # Insert data nto the database.
+        for row in reader:
 
-        try:
+            # SQL to insert task information.
+            sqlInsert = \
+                "INSERT INTO task_data (id, timestamp, temperature, duration, batch_id)  \
+                VALUES (%s, %s, %s, %s, %s)"
 
-            # Execute query and commit changes.
-            cursor.execute(sqlInsert, (row['id'],
-                                       row['timestamp'],
-                                       row['temperature'],
-                                       row['duration']))
-            connect.commit()
+            try:
 
-            # Increment the record count.
-            recordCount += 1
+                # Execute query and commit changes.
+                cursor.execute(sqlInsert, (row['id'],
+                                           row['timestamp'],
+                                           row['temperature'],
+                                           row['duration'],
+                                           batchid))
+                connect.commit()
 
-        except psycopg2.DatabaseError as e:
+                # Increment the record count.
+                recordCount += 1
 
-            # Confirm error adding data and stop program execution.
-            print("Error adding person information.", e)
-            quit()
+            except psycopg2.DatabaseError as e:
 
-    # Close database connection.
-    connect.close()
+                # Confirm error adding data and stop program execution.
+                print("Error adding person information.", e)
+                quit()
 
-    # Provide feedback on the number of records added.
-    if recordCount == 0:
+        # Close database connection.
+        connect.close()
 
-        print("No new records added.")
+        # Provide feedback on the number of records added.
+        if recordCount == 0:
 
-    elif recordCount == 1:
+            print("No new records added.")
 
-        print(str(recordCount) + " task record added.")
+        elif recordCount == 1:
 
-    else:
+            print(str(recordCount) + " task record added.")
 
-        print(str(recordCount) + " task records added.")
+        else:
+
+            print(str(recordCount) + " task records added.")
+
+    # Move src to archive directory
+    archive_batch_id = re.sub(r"[^a-zA-Z0-9]", "", str(batchid))
+    shutil.move(file_path + file_name, archive_file_path + archive_batch_id + '_task_data.csv')
 
 else:
 

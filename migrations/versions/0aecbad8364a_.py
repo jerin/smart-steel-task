@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: b6ed74597b7b
+Revision ID: 0aecbad8364a
 Revises: 
-Create Date: 2020-01-17 06:53:48.001279
+Create Date: 2020-01-19 20:38:14.440320
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision = 'b6ed74597b7b'
+revision = '0aecbad8364a'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -31,7 +31,8 @@ def upgrade():
     sa.Column('timestamp', sa.DateTime(), nullable=True),
     sa.Column('temperature', sa.Float(), nullable=True),
     sa.Column('duration', sa.String(length=100), nullable=True),
-    sa.PrimaryKeyConstraint('id')
+    sa.Column('batch_id', sa.DateTime(), nullable=False),
+    sa.PrimaryKeyConstraint('id', 'batch_id')
     )
     # ### end Alembic commands ###
 
